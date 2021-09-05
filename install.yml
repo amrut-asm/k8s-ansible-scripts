@@ -1,0 +1,12 @@
+---
+
+- name: Install required runtimes and kubeadm
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: Copy script
+      copy: src=/root/abench/bootstrap dest=/home/user/bootstrap mode=0777
+
+    - name: Bootstrap
+      ansible.builtin.shell: sh /home/user/bootstrap
+      become: yes

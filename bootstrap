@@ -1,0 +1,21 @@
+#!/bin/bash
+sudo apt-get -y update
+echo "Installing docker runtime"
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --yes --dearmor -o \
+/usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo \
+tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get -y update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+echo "Installing kubeadm and required binaries"
+sudo apt-get -y update
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg \
+https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] \
+https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get -y update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+echo "Bootstrapping complete" 
